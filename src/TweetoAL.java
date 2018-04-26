@@ -7,20 +7,21 @@ import java.util.Scanner;
 /**
  * Created by abdll on 12/21/2017.
  */
-public class TweetoAL {
+public class TweetoArrayList {
     ArrayList<Tweeto> TweetsArrayList;// the tweets from the read file will be  stored in this array list
     private int numberOfMatchedtweets;//the number of matched tweets that have the same tweet id and the same tweet text (substring)
 
     /*
        the default constructor of the class
     */
-    public TweetoAL() {
+    public TweetoArrayList() {
         TweetsArrayList = new ArrayList<>();
     }
     //setters and getters
     public ArrayList<Tweeto> getTweetsArrayList() {
         return TweetsArrayList;
     }
+    //not used
     public void setTweetsArrayList(ArrayList<Tweeto> tweetsArrayList) {
         this.TweetsArrayList = tweetsArrayList;
     }
@@ -29,6 +30,7 @@ public class TweetoAL {
     public int getNumberOfMatchedtweets() {
         return numberOfMatchedtweets;
     }
+    //not used
     public void setNumberOfMatchedtweets(int numberOfMatchedtweets) {
         this.numberOfMatchedtweets = numberOfMatchedtweets;
     }
@@ -39,26 +41,27 @@ public class TweetoAL {
     */
     public void readTweetsFile(String filename) {
         try {
-            Scanner fileReader = new Scanner(new File(filename));
-            while (fileReader.hasNext()) {
-                fileReader.next();
-                String content = "";
-                String id = fileReader.next();
-                String temp = fileReader.next();
+            //trys to read from
+            Scanner Reader = new Scanner(new File(filename));
+            while (Reader.hasNext()) {
+                Reader.next();
+                String fileContent = "";
+                String id = Reader.next();
+                String temp = Reader.next();
                 while (true) {
                     if (temp.contains("@") || temp.contains("RT")) {
-                        temp = fileReader.next();
+                        temp = Reader.next();
                     } else {
                         break;
                     }
                 }
-                content = temp;
-                String last = fileReader.nextLine();
-                while (!last.contains("2016")) {
-                    last = last + fileReader.nextLine();
+                fileContent = temp;
+                String last = Reader.nextLine();
+                while (!last.contains("2016")) {//2016 is the year of the tweet and indicate the end of the tweet fileContent
+                    last = last + Reader.nextLine();
                 }
-                content = content + last.substring(0, last.indexOf("Wed Dec") - 1);
-                getTweetsArrayList().add(new Tweeto(id, content));
+                fileContent = fileContent + last.substring(0, last.indexOf("Wed Dec") - 1);
+                getTweetsArrayList().add(new Tweeto(id, fileContent));
             }
         } catch (FileNotFoundException ex) {
             System.out.println("Tweets file not found");
@@ -67,12 +70,12 @@ public class TweetoAL {
 
     /* this method is responsible to search and give the number of the the matched tweets
       */
-    public Tweeto search(String U, String K) {
-        U = "@" + U;
+    public Tweeto search(String UserID, String KEYword) {
+        UserID = "@" + UserID;
         Iterator<Tweeto> ALI = getTweetsArrayList().iterator();
         while (ALI.hasNext()) {
             Tweeto t = ALI.next();
-            if (t.getTweet().toLowerCase().contains(K.toLowerCase()) && t.getID().toLowerCase().startsWith(U.toLowerCase()))
+            if (t.getTweet().toLowerCase().contains(KEYword.toLowerCase()) && t.getID().toLowerCase().startsWith(UserID.toLowerCase()))
                 numberOfMatchedtweets++;
         }
         return null;
