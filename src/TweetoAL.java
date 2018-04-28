@@ -68,7 +68,7 @@ public class TweetoArrayList {
         }
     }
 
-    /* this method is responsible to search and give the number of the the matched tweets
+    /* this method is responsible to search  give the number of the the matched tweets
       */
     public Tweeto search(String UserID, String KEYword) {
         UserID = "@" + UserID;
